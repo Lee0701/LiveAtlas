@@ -16,6 +16,7 @@
 
 <template>
 	<Markers :layer-group="layerGroup" :set="markerSet"></Markers>
+	<WikiMarkers :layer-group="layerGroup"></WikiMarkers>
 </template>
 
 <script lang="ts">
@@ -26,10 +27,12 @@ import LiveAtlasLayerGroup from "@/leaflet/layer/LiveAtlasLayerGroup";
 import {LiveAtlasMarkerSet} from "@/index";
 import {watch} from "vue";
 import Markers from "@/components/map/marker/Markers.vue";
+import WikiMarkers from "@/components/map/marker/WikiMarkers.vue";
 
 export default defineComponent({
 	components: {
 		Markers,
+		WikiMarkers,
 	},
 
 	props: {

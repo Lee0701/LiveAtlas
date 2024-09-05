@@ -2,6 +2,7 @@
 node_modules
 /dist
 /public/standalone/
+/tiles
 
 # local env files
 .env.local
