@@ -18,7 +18,10 @@
 import {defineComponent, computed, onMounted, watch, onUnmounted} from "@vue/runtime-core";
 import {useStore} from "@/store";
 import LiveAtlasLayerGroup from "@/leaflet/layer/LiveAtlasLayerGroup";
-import {LiveAtlasAreaMarker, LiveAtlasPointMarker, LiveAtlasMarkerSet} from "@/index";
+import {
+	LiveAtlasAreaMarker, LiveAtlasPointMarker, LiveAtlasMarkerSet,
+	LiveAtlasWikiMarkerInfo
+} from "@/index";
 import {DynmapMarkerUpdate} from "@/dynmap";
 import {
 	createMarkerLayer, LiveAtlasMarkerType
@@ -26,7 +29,7 @@ import {
 import {Layer} from "leaflet";
 import axios from "axios";
 
-const {apiEndpoint, categoryName} = window;
+const {apiEndpoint, categoryName} = window.wikiConfig;
 
 export default defineComponent({
 	props: {
@@ -43,7 +46,7 @@ export default defineComponent({
 
 		let converter = currentMap.value!.locationToLatLng.bind(currentMap.value);
 
-		const categoryMembers = async (cmcontinue = undefined) => {
+		const categoryMembers = async (cmcontinue = undefined): Promise<any[]> => {
 			const params = {
 				action: 'query',
 				format: 'json',
@@ -70,16 +73,16 @@ export default defineComponent({
 			return parse.text['*'];
 		}
 
-		const extractMarkerTags = (text: string) => {
+		const extractMarkerTags = (text: string): LiveAtlasWikiMarkerInfo[] => {
 			const div = document.createElement('div');
 			div.innerHTML = text;
 			const markerTags = div.querySelectorAll('.map-marker');
 			return [...markerTags].map((markerTag) => {
-				return JSON.parse(markerTag.innerText);
+				return JSON.parse(markerTag.innerHTML);
 			})
 		}
 
-		const createMarker = (data: Object) => {
+		const createMarker = (data: LiveAtlasWikiMarkerInfo) => {
 			const {name, x, z, world, minzoom, maxzoom, icon} = data;
 			const layer = createMarkerLayer({
 				id: name,
@@ -96,8 +99,8 @@ export default defineComponent({
 		}
 
 		const createMarkers = () => {			
-			categoryMembers().then(async (members) => {
-				await Promise.all(members.map(async (member) => {
+			categoryMembers().then(async (members: any) => {
+				await Promise.all(members.map(async (member: any) => {
 					const text = await parse(member.title);
 					extractMarkerTags(text).forEach((data) => {
 						data.title = member.title;

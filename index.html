@@ -25,9 +25,11 @@
     <!-- <script src="./standalone/config.js"></script> -->
     <script src="/wiki-env.js"></script>
     <script>
-        window.configureWikiEnv()
-        window.apiEndpoint = window.apiEndpoint || "http://localhost/api.php";
-        window.categoryName = window.categoryName || "Category:Map Marker";
+        const {apiEndpoint, categoryName} = window.configureWikiEnv()
+        window.wikiConfig = {
+            apiEndpoint: apiEndpoint || "http://localhost/api.php",
+            categoryName: categoryName || "Category:Map Marker",
+        }
     </script>
     <script>
         window.liveAtlasConfig = {

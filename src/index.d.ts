@@ -367,3 +367,25 @@ export interface LiveAtlasTileElement extends HTMLImageElement {
 	callback: DoneCallback;
 	abortController: AbortController;
 }
+
+export interface LiveAtlasWikiConfig {
+	apiEndpoint: string;
+	categoryName: string;
+}
+
+declare global {
+	interface Window {
+		wikiConfig: LiveAtlasWikiConfig;
+	}
+}
+
+export interface LiveAtlasWikiMarkerInfo {
+	title: string;
+	name: string;
+	x: number;
+	z: number;
+	world: string;
+	minzoom: number;
+	maxzoom: number;
+	icon: string;
+}
