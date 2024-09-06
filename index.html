@@ -23,7 +23,12 @@
 
     <!-- Remove this if you are using the servers config below -->
     <!-- <script src="./standalone/config.js"></script> -->
-
+    <script src="/wiki-env.js"></script>
+    <script>
+        window.configureWikiEnv()
+        window.apiEndpoint = window.apiEndpoint || "http://localhost/api.php";
+        window.categoryName = window.categoryName || "Category:Map Marker";
+    </script>
     <script>
         window.liveAtlasConfig = {
         	// By default LiveAtlas looks for a dynmap standalone/config.js file
