@@ -34,19 +34,9 @@
 @font-face {
 	font-family: 'Raleway';
 	font-style: normal;
-	font-weight: 400;
+	font-weight: 100 900;
 	font-display: swap;
-	src: url(https://fonts.gstatic.com/s/raleway/v22/1Ptxg8zYS_SKggPN4iEgvnHyvveLxVvaorCIPrE.woff2) format('woff2');
-	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-	font-family: 'Raleway';
-	font-style: normal;
-	font-weight: bold;
-	font-display: swap;
-	src: url(https://fonts.gstatic.com/s/raleway/v22/1Ptxg8zYS_SKggPN4iEgvnHyvveLxVsEpbCIPrE.woff2) format('woff2');
-	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+	src: url(../assets/fonts/Raleway-VariableFont_wght.ttf) format("opentype-variations");
 }
 
 :root {
@@ -60,7 +50,7 @@
 }
 
 h1, h2, h3, h4, h5, h6 {
-	font-weight: normal;
+	font-weight: 400;
 	margin-top: 0;
 	color: var(--text-emphasis);
 }
@@ -114,11 +104,11 @@ input {
 }
 
 :focus {
-	outline: var(--outline-focus) auto thick !important;
+	outline: var(--outline-focus) solid 0.3rem !important;
 }
 
 :focus-visible {
-	outline: var(--outline-focus) auto thick !important;
+	outline: var(--outline-focus) solid 0.3rem !important;
 }
 
 .checkbox {
@@ -165,7 +155,7 @@ input {
 
 		&:focus ~ span:after {
 			content: '';
-			outline: var(--outline-focus) auto thick;
+			outline: var(--outline-focus) solid 0.3rem;
 			position: absolute;
 			top: 0;
 			right: -0.5rem;

@@ -15,16 +15,16 @@
   -->
 
 <template>
-	<RadioList aria-labelledby="servers-heading">
+	<RadioList name="server" aria-labelledby="servers-heading">
 		<ServerListItem :server="server" v-for="[name, server] in servers" :key="name"></ServerListItem>
 	</RadioList>
 </template>
 
 <script lang="ts">
-import ServerListItem from './ServerListItem.vue';
 import {defineComponent} from 'vue';
-import RadioList from "@/components/util/RadioList.vue";
 import {LiveAtlasServerDefinition} from "@/index";
+import ServerListItem from './ServerListItem.vue';
+import RadioList from "@/components/util/RadioList.vue";
 
 export default defineComponent({
 	name: 'ServerList',

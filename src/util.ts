@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import {useStore} from "@/store";
-import LiveAtlasMapDefinition from "@/model/LiveAtlasMapDefinition";
+import {notify} from "@kyvg/vue3-notification";
 import {
 	Coordinate,
 	LiveAtlasBounds,
@@ -24,11 +23,13 @@ import {
 	LiveAtlasLocation,
 	LiveAtlasMessageConfig, LiveAtlasParsedUrl,
 } from "@/index";
-import {notify} from "@kyvg/vue3-notification";
+import {Store} from "@/store";
+import LiveAtlasMapDefinition from "@/model/LiveAtlasMapDefinition";
 import {globalMessages, serverMessages} from "../messages";
+import ConfigurationError from "@/errors/ConfigurationError";
 
 const documentRange = document.createRange(),
-	brToSpaceRegex = /<br \/>/g;
+	brToSpaceRegex = /<br ?\/?>/g;
 
 export const titleColoursRegex = /§[0-9a-f]/ig;
 export const netherWorldNameRegex = /[_\s]?nether([\s_]|$)/i;
@@ -70,9 +71,9 @@ export const parseUrl = (url: URL): LiveAtlasParsedUrl | null => {
 }
 
 /**
- * Parses the given hash into a {@link LiveAtlasParsedUrl}, if the hash matches the LiveAtlas URL hash format
+ * Parses the given hash into a {@link LiveAtlasParsedUrl}, if the hash matches the LiveAtlas or Overviewer URL hash format
  * @param {string} hash The hash to parse
- * @returns {LiveAtlasParsedUrl | null} A LiveAtlasParsedUrl if the provided hash matched the LiveAtlas URL
+ * @returns {LiveAtlasParsedUrl | null} A LiveAtlasParsedUrl if the provided hash matched the LiveAtlas or Overviewer URL
  * hash format, otherwise null
  */
 export const parseMapHash = (hash: string): LiveAtlasParsedUrl | null => {
@@ -192,6 +193,25 @@ export const getUrlForLocation = (map: LiveAtlasMapDefinition, location: Coordin
 }
 
 /**
+ * Validates a configured map URL, warning on cross-origin and erroring if the URL is invalid.
+ * @param input
+ * @param server
+ * @param key
+ */
+export const validateConfigURL = (input: any, server: string, key: string): void => {
+	try {
+		const url = new URL(input, window.location.href);
+
+		if(url.origin !== window.location.origin) {
+			console.warn(`[${server}]: ${key} URL is on a different origin to LiveAtlas (${url.origin} vs ${window.location.origin}).\nEnsure you have configured appropriate CORS headers (https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)`);
+		}
+	} catch(e) {
+		console.error(`[${server}]: ${key} URL (${input}) is missing or invalid.`);
+		throw new ConfigurationError(`${key} URL is missing or invalid`);
+	}
+}
+
+/**
  * Focuses the first html element which matches the given selector, if any
  * @param {string} selector The selector string
  */
@@ -228,14 +248,14 @@ export const stripHTML = (text: string) => {
  * Default success callback function for VueClipboard, will display a notification with the configured copy success
  * message
  */
-export const clipboardSuccess = () => () => notify(useStore().state.messages.copyToClipboardSuccess);
+export const clipboardSuccess = (store: Store) => () => notify(store.state.messages.copyToClipboardSuccess);
 
 /**
  * Default error callback function for VueClipboard, will display a notification with the configured copy error
  * message
  */
-export const clipboardError = () => (e: Error) => {
-	notify({ type: 'error', text: useStore().state.messages.copyToClipboardError });
+export const clipboardError = (store: Store) => (e: Error) => {
+	notify({ type: 'error', text: store.state.messages.copyToClipboardError });
 	console.error('Error copying to clipboard', e);
 };
 
@@ -277,7 +297,7 @@ const _getMessages = (messageKeys: any, config: any = {}) => {
 	const messages: any = {};
 
 	for(const key of messageKeys) {
-		messages[key] = config[key] || `Missing message: ${key}`;
+		messages[key] = typeof config[key] === 'string' && config[key] ? config[key] : `Missing message: ${key}`;
 	}
 
 	return messages as LiveAtlasGlobalMessageConfig;

@@ -22,8 +22,8 @@
 	}" :data-section="name">
 		<h2 class="section__heading">
 			<button :id="`${name}-heading`" type="button"
-			        @click.prevent="toggle" :title="title"
-			        :aria-expanded="!collapsed" :aria-controls="`${name}-content`">
+              @click.prevent="toggle" :title="title"
+              :aria-expanded="!collapsed" :aria-controls="`${name}-content`">
 				<span>
 					<slot name="heading"></slot>
 				</span>
@@ -37,13 +37,12 @@
 </template>
 
 <script lang="ts">
-import {useStore} from "@/store";
+import {defineComponent, computed} from "vue";
 import {LiveAtlasSidebarSection} from "@/index";
-import {defineComponent} from "@vue/runtime-core";
+import {useStore} from "@/store";
 import SvgIcon from "@/components/SvgIcon.vue";
 import '@/assets/icons/arrow.svg';
 import {MutationTypes} from "@/store/mutation-types";
-import {computed} from "vue";
 
 export default defineComponent({
 	name: 'SidebarSection',
@@ -110,9 +109,6 @@ export default defineComponent({
 			z-index: 3;
 			border-radius: inherit;
 			margin: -1.5rem -1.5rem 0;
-			white-space: nowrap;
-			text-overflow: ellipsis;
-			overflow: hidden;
 
 			&, button {
 				padding: 1.5rem;
@@ -120,6 +116,7 @@ export default defineComponent({
 
 			button {
 				text-overflow: ellipsis;
+				white-space: nowrap;
 				overflow: hidden;
 				display: flex;
 				font-size: 2rem;
@@ -129,6 +126,8 @@ export default defineComponent({
 				width: calc(100% + 3rem);
 				align-items: center;
 				text-shadow: var(--text-shadow);
+				padding: 1rem 1.5rem;
+				line-height: 1.5;
 				margin: -1.5rem;
 
 				.svg-icon {

@@ -15,7 +15,7 @@
   -->
 
 <template>
-	<RadioList ref="list" v-if="!currentSet" :aria-labelledby="ariaLabelledby">
+	<RadioList ref="list" v-if="!currentSet" name="marker-set" :aria-labelledby="ariaLabelledby">
 		<template v-for="[id, markerSet] in markerSets" :key="id">
 			<input :id="`marker-set-${id}`" type="radio" name="marker-set" v-model="currentSet" v-bind:value="markerSet">
 			<label :for="`marker-set-${id}`">
@@ -27,7 +27,7 @@
 
 	<template v-else>
 		<div ref="subHeader" class="markers__header">
-			<button ref="backButton" class="markers__back" @click.prevent="currentSet = undefined">
+			<button type="button" ref="backButton" class="markers__back" @click.prevent="currentSet = undefined">
 				<SvgIcon name="arrow"></SvgIcon>
 			</button>
 			<h3 class="markers__set">{{ currentSet.label }}</h3>
@@ -37,15 +37,14 @@
 </template>
 
 <script lang="ts">
-import {ComponentPublicInstance, defineComponent, nextTick, onMounted, ref} from 'vue';
-import RadioList from "@/components/util/RadioList.vue";
+import {ComponentPublicInstance, defineComponent, nextTick, onMounted, ref, onUnmounted, watch} from 'vue';
 import {LiveAtlasMarkerSet} from "@/index";
+import {DynmapMarkerUpdate} from "@/dynmap";
 import {nonReactiveState} from "@/store/state";
-import {onUnmounted, watch} from "@vue/runtime-core";
+import RadioList from "@/components/util/RadioList.vue";
 import MarkerList from "@/components/list/MarkerList.vue";
 import SvgIcon from "@/components/SvgIcon.vue";
 import {registerUpdateHandler, unregisterUpdateHandler} from "@/util/markers";
-import {DynmapMarkerUpdate} from "@/dynmap";
 
 export default defineComponent({
 	name: 'MarkerSetList',

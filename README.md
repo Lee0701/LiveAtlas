@@ -1,4 +1,4 @@
-# LiveAtlas [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE) [![Discord](https://img.shields.io/discord/390942438061113344?color=8C9CFE&label=discord&logo=discord&logoColor=white)](https://discord.gg/DBduB9qyv3) [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/JLyne/LiveAtlas/Build)](https://github.com/JLyne/LiveAtlas/actions)
+# LiveAtlas [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE) [![Discord](https://img.shields.io/discord/390942438061113344?color=8C9CFE&label=discord&logo=discord&logoColor=white)](https://discord.gg/DBduB9qyv3) [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/JLyne/LiveAtlas/main.yml?branch=master)](https://github.com/JLyne/LiveAtlas/actions)
 
 
 A map frontend built with [Vue.js](https://github.com/vuejs/vue) and Typescript. Supports [Dynmap](https://github.com/webbukkit/dynmap), [Squaremap](https://github.com/jpenilla/squaremap), [Pl3xmap](https://github.com/NeumimTo/Pl3xMap) and [Overviewer](https://github.com/overviewer/Minecraft-Overviewer).
@@ -36,7 +36,7 @@ The index.html file can be edited to add custom favicons, styles or analytics, j
 You are also free to build LiveAtlas yourself to make further changes.
 
 ## Building
-First run `npm install` to install LiveAtlas dependencies. You can then either run `npm run serve` to start a local dev server, or `npm run build` to build.
+This repository uses [yarn zero-installs](https://yarnpkg.com/features/zero-installs), so all dependencies are provided without installing. You can run `yarn run serve` to start a local dev server, or `yarn run build` to build LiveAtlas.
 
 ## Support
 If you find a bug, please create an issue with as must detail as possible. I'm working on this in my spare time, so fixes are on a best effort basis, but I'll eventually find time for them.

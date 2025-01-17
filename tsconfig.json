@@ -13,12 +13,12 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "isolatedModules": true,
+    "useDefineForClassFields": true,
     "baseUrl": ".",
     "types": [
       "vite/client",
       "vue",
-      "jest",
-      "jest-in-case"
+      "vitest/globals"
     ],
     "paths": {
       "@/*": [
@@ -28,14 +28,13 @@
     "lib": [
       "esnext",
       "dom",
-      "dom.iterable",
-      "scripthost"
+      "dom.iterable"
     ]
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.vue",
-    "tests/**/*.ts"
+    "test/**/*.ts"
   ],
   "exclude": [
     "node_modules"

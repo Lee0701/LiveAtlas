@@ -17,23 +17,26 @@
 <template>
 	<section class="sidebar" role="none" ref="sidebar">
 		<header class="sidebar__buttons">
-			<button v-if="mapCount > 1 || serverCount > 1" class="button--maps" data-section="maps"
-			        :title="mapCount > 1 ? messageWorlds : messageServers"
-			        :aria-label="mapCount > 1 ? messageWorlds : messageServers"
-			        :aria-expanded="mapsVisible"
-			        @click="handleSectionClick" @keydown="handleSectionKeydown">
-				<SvgIcon :name="mapCount > 1 ? 'maps' : 'servers'"></SvgIcon>
+			<button ref="maps-button" v-if="mapCount > 1 || serverCount > 1" type="button"
+              class="button--maps" data-section="maps"
+              :title="mapCount > 1 ? messageWorlds : messageServers"
+              :aria-label="mapCount > 1 ? messageWorlds : messageServers"
+              :aria-expanded="mapsVisible"
+              @click="handleSectionClick" @keydown="handleSectionKeydown">
+				<SvgIcon ref="maps-icon" :name="mapCount > 1 ? 'maps' : 'servers'"></SvgIcon>
 			</button>
-			<button v-if="markerUIEnabled" class="button--markers" data-section="markers"
-			        :title="messageMarkers"
-			        :aria-label="messageMarkers"
-			        :aria-expanded="markersVisible"
-			        @click="handleSectionClick" @keydown="handleSectionKeydown">
+			<button ref="markers-button" v-if="markerUIEnabled" type="button"
+              class="button--markers" data-section="markers"
+              :title="messageMarkers"
+              :aria-label="messageMarkers"
+              :aria-expanded="markersVisible"
+              @click="handleSectionClick" @keydown="handleSectionKeydown">
 				<SvgIcon name="marker_point"></SvgIcon>
 			</button>
-			<button v-if="playerMakersEnabled" class="button--players" data-section="players"
-			        :title="messagePlayers" :aria-label="messagePlayers" :aria-expanded="playersVisible"
-			        @click="handleSectionClick" @keydown="handleSectionKeydown">
+			<button ref="players-button" v-if="playerMakersEnabled" type="button"
+              class="button--players" data-section="players"
+              :title="messagePlayers" :aria-label="messagePlayers" :aria-expanded="playersVisible"
+              @click="handleSectionClick" @keydown="handleSectionKeydown">
 				<SvgIcon name="players"></SvgIcon>
 			</button>
 		</header>
@@ -48,23 +51,22 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from "@vue/runtime-core";
+import {computed, defineComponent, nextTick, ref, watch} from "vue";
+import {LiveAtlasSidebarSection} from "@/index";
+import {useStore} from "@/store";
+import {MutationTypes} from "@/store/mutation-types";
 import FollowTargetSection from './sidebar/FollowTargetSection.vue';
 import PlayersSection from "@/components/sidebar/PlayersSection.vue";
 import ServersSection from "@/components/sidebar/ServersSection.vue";
 import WorldsSection from "@/components/sidebar/WorldsSection.vue";
 import MarkersSection from "@/components/sidebar/MarkersSection.vue";
-import {useStore} from "@/store";
 import SvgIcon from "@/components/SvgIcon.vue";
-import {MutationTypes} from "@/store/mutation-types";
+import {handleKeyboardEvent} from "@/util/events";
+import {focus} from "@/util";
 import "@/assets/icons/players.svg";
 import "@/assets/icons/maps.svg";
 import "@/assets/icons/servers.svg";
 import "@/assets/icons/marker_point.svg";
-import {nextTick, ref, watch} from "vue";
-import {handleKeyboardEvent} from "@/util/events";
-import {focus} from "@/util";
-import {LiveAtlasSidebarSection} from "@/index";
 
 export default defineComponent({
 	components: {
@@ -200,6 +202,7 @@ export default defineComponent({
 	.sidebar__buttons {
 		display: flex;
 		flex-direction: row;
+		flex-shrink: 0;
 		align-items: center;
 		justify-content: flex-end;
 		margin-bottom: var(--ui-element-spacing);
@@ -240,7 +243,7 @@ export default defineComponent({
 		overflow: auto;
 		pointer-events: auto;
 		margin-right: -0.5rem;
-		padding: 0.2rem 0.5rem 0 0.2rem;
+		padding: 0.3rem 0.5rem 0 0.3rem;
 		width: 26rem;
         align-items: flex-end;
 		overscroll-behavior: contain;

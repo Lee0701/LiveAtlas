@@ -78,12 +78,12 @@
 @mixin button-pressed {
 	background-color: var(--background-selected);
 	color: var(--text-selected);
-	font-weight: bold;
+	font-weight: 700;
 	text-shadow: none;
 }
 
 @mixin button-focused {
-	outline: var(--outline-focus) auto thick !important;
+	outline: var(--outline-focus) solid 0.3rem !important;
 	z-index: 1;
 	border-color: var(--background-dark);
 }
