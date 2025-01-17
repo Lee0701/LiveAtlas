@@ -15,7 +15,7 @@
   -->
 
 <script lang="ts">
-import {defineComponent, computed, onMounted, watch, onUnmounted} from "@vue/runtime-core";
+import {defineComponent, computed, onMounted, watch, onUnmounted} from "vue";
 import {useStore} from "@/store";
 import LiveAtlasLayerGroup from "@/leaflet/layer/LiveAtlasLayerGroup";
 import {

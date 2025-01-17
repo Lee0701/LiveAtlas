@@ -1478,6 +1478,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"axios@npm:^1.7.7":
+  version: 1.7.9
+  resolution: "axios@npm:1.7.9"
+  dependencies:
+    follow-redirects: "npm:^1.15.6"
+    form-data: "npm:^4.0.0"
+    proxy-from-env: "npm:^1.1.0"
+  checksum: b7a5f660ea53ba9c2a745bf5ad77ad8bf4f1338e13ccc3f9f09f810267d6c638c03dac88b55dae8dc98b79c57d2d6835be651d58d2af97c174f43d289a9fd007
+  languageName: node
+  linkType: hard
+
 "balanced-match@npm:^1.0.0":
   version: 1.0.2
   resolution: "balanced-match@npm:1.0.2"
@@ -2738,6 +2749,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"follow-redirects@npm:^1.15.6":
+  version: 1.15.9
+  resolution: "follow-redirects@npm:1.15.9"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: e3ab42d1097e90d28b913903841e6779eb969b62a64706a3eb983e894a5db000fbd89296f45f08885a0e54cd558ef62e81be1165da9be25a6c44920da10f424c
+  languageName: node
+  linkType: hard
+
 "foreground-child@npm:^2.0.0":
   version: 2.0.0
   resolution: "foreground-child@npm:2.0.0"
@@ -3473,7 +3494,7 @@ __metadata:
 "leaflet@git+https://github.com/JLyne/Leaflet.git#af5b848e260c740de541acb6460611fedb78d1d7":
   version: 1.9.4
   resolution: "leaflet@https://github.com/JLyne/Leaflet.git#commit=af5b848e260c740de541acb6460611fedb78d1d7"
-  checksum: da650fb4383b4f5592641e642e00144b5b5ff39154d05d830d66e0b0ddea04e6180eb5711a531c3234a25a73d273293cff1bf7d98cdfbe4c9aeae8e7d84e55d2
+  checksum: cffebd3724ee3cb51331c6cdc8b581c04dc1b21e6e2cea37ade9285b5cb86cef6b9bd420f8fc4c0e6b4fc7023b19eba9bef4f87c4e3300f54d231ceea1188926
   languageName: node
   linkType: hard
 
@@ -3520,6 +3541,7 @@ __metadata:
     "@vue/compiler-dom": "npm:3.2.37"
     "@vue/eslint-config-typescript": "npm:11.0.3"
     "@vue/test-utils": "npm:2.4.0"
+    axios: "npm:^1.7.7"
     c8: "npm:8.0.0"
     cpy-cli: "npm:5.0.0"
     eslint: "npm:8.44.0"
@@ -4440,6 +4462,13 @@ __metadata:
   version: 1.2.4
   resolution: "proto-list@npm:1.2.4"
   checksum: 9cc3b46d613fa0d637033b225db1bc98e914c3c05864f7adc9bee728192e353125ef2e49f71129a413f6333951756000b0e54f299d921f02d3e9e370cc994100
+  languageName: node
+  linkType: hard
+
+"proxy-from-env@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "proxy-from-env@npm:1.1.0"
+  checksum: f0bb4a87cfd18f77bc2fba23ae49c3b378fb35143af16cc478171c623eebe181678f09439707ad80081d340d1593cd54a33a0113f3ccb3f4bc9451488780ee23
   languageName: node
   linkType: hard
 
