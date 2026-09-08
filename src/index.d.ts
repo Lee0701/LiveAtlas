@@ -388,4 +388,5 @@ export interface LiveAtlasWikiMarkerInfo {
 	minZoom: number;
 	maxZoom: number;
 	icon: string;
+	fullUrl: string;
 }

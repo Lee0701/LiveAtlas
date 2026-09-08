@@ -67,7 +67,7 @@ export default defineComponent({
 		}
 
 		const createMarker = (data: LiveAtlasWikiMarkerInfo) => {
-			const {name, x, y, z, world, minZoom, maxZoom, icon} = data;
+			const {name, x, y, z, world, minZoom, maxZoom, icon, fullUrl} = data;
 			const layer = createMarkerLayer({
 				id: name,
 				type: LiveAtlasMarkerType.POINT,
@@ -77,6 +77,8 @@ export default defineComponent({
 				tooltip: name,
 				iconUrl: icon,
 				iconSize: [16, 16],
+				popup: `<a href="${fullUrl}">${name}</a>`,
+				isPopupHTML: true,
 			} as LiveAtlasPointMarker, converter)
 			layers.set(name, layer);
 			props.layerGroup.addLayer(layer);
@@ -95,6 +97,7 @@ export default defineComponent({
 						minZoom: printouts['MinZoom'][0],
 						maxZoom: printouts['MaxZoom'][0],
 						icon: printouts['Icon'][0],
+						fullUrl: result.fullurl,
 					});
 				});
 			})
