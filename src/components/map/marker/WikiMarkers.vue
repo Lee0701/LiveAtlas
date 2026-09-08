@@ -67,13 +67,13 @@ export default defineComponent({
 		}
 
 		const createMarker = (data: LiveAtlasWikiMarkerInfo) => {
-			const {name, x, y, z, world, minzoom, maxzoom, icon} = data;
+			const {name, x, y, z, world, minZoom, maxZoom, icon} = data;
 			const layer = createMarkerLayer({
 				id: name,
 				type: LiveAtlasMarkerType.POINT,
 				location: {x, y, z},
-				// minZoom: minzoom,
-				// maxZoom: maxzoom,
+				minZoom: minZoom,
+				maxZoom: maxZoom,
 				tooltip: name,
 				iconUrl: icon,
 				iconSize: [16, 16],
@@ -92,8 +92,8 @@ export default defineComponent({
 						y: printouts['Y'][0],
 						z: printouts['Z'][0],
 						world: printouts['World'][0],
-						minzoom: printouts['MinZoom'][0],
-						maxzoom: printouts['MaxZoom'][0],
+						minZoom: printouts['MinZoom'][0],
+						maxZoom: printouts['MaxZoom'][0],
 						icon: printouts['Icon'][0],
 					});
 				});

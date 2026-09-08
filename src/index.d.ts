@@ -385,7 +385,7 @@ export interface LiveAtlasWikiMarkerInfo {
 	y: number;
 	z: number;
 	world: string;
-	minzoom: number;
-	maxzoom: number;
+	minZoom: number;
+	maxZoom: number;
 	icon: string;
 }
