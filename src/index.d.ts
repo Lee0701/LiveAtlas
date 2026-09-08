@@ -380,9 +380,9 @@ declare global {
 }
 
 export interface LiveAtlasWikiMarkerInfo {
-	title: string;
 	name: string;
 	x: number;
+	y: number;
 	z: number;
 	world: string;
 	minzoom: number;

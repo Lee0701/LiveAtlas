@@ -42,52 +42,36 @@ export default defineComponent({
 	setup(props) {
 		const store = useStore(),
 			currentMap = computed(() => store.state.currentMap),
+			currentWorld = computed(() => store.state.currentWorld),
 			layers = Object.freeze(new Map()) as Map<string, Layer>;
 
 		let converter = currentMap.value!.locationToLatLng.bind(currentMap.value);
 
-		const categoryMembers = async (cmcontinue = undefined): Promise<any[]> => {
+		const mapMarkers = async (offset = 0): Promise<any[]> => {
+			const fields = ['Name', 'X', 'Y', 'Z', 'World', 'MinZoom', 'MaxZoom', 'Icon']
+				.map((field) => '?' + field).join('|');
+			const world = currentWorld.value!.name;
+			const query = `[[${categoryName}]][[world::${world}]]|${fields}|offset=${offset}`;
 			const params = {
-				action: 'query',
+				action: 'ask',
+				query: query,
 				format: 'json',
-				list: 'categorymembers',
-				cmtitle: categoryName,
-				cmcontinue,
+				origin: '*',
 			}
 			const resp = await axios.get(apiEndpoint, {params})
-			const {query} = resp.data;
-			const result = query.categorymembers;
-			if(!resp.data['continue']) return result;
-			const continued = await categoryMembers(resp.data['continue'].cmcontinue);
-			return [...result, ...continued];
-		}
-
-		const parse = async (page: string) => {
-			const params = {
-				action: 'parse',
-				format: 'json',
-				page,
-			}
-			const resp = await axios.get(apiEndpoint, {params})
-			const {parse} = resp.data;
-			return parse.text['*'];
-		}
-
-		const extractMarkerTags = (text: string): LiveAtlasWikiMarkerInfo[] => {
-			const div = document.createElement('div');
-			div.innerHTML = text;
-			const markerTags = div.querySelectorAll('.map-marker');
-			return [...markerTags].map((markerTag) => {
-				return JSON.parse(markerTag.innerHTML);
-			})
+			const results = Object.values(resp.data.query.results);
+			const queryContinueOffset = resp.data['query-continue-offset'];
+			if(!queryContinueOffset) return results;
+			const continued = await mapMarkers(queryContinueOffset);
+			return [...results, ...continued];
 		}
 
 		const createMarker = (data: LiveAtlasWikiMarkerInfo) => {
-			const {name, x, z, world, minzoom, maxzoom, icon} = data;
+			const {name, x, y, z, world, minzoom, maxzoom, icon} = data;
 			const layer = createMarkerLayer({
 				id: name,
 				type: LiveAtlasMarkerType.POINT,
-				location: {x, y: 64, z},
+				location: {x, y, z},
 				// minZoom: minzoom,
 				// maxZoom: maxzoom,
 				tooltip: name,
@@ -99,14 +83,20 @@ export default defineComponent({
 		}
 
 		const createMarkers = () => {			
-			categoryMembers().then(async (members: any) => {
-				await Promise.all(members.map(async (member: any) => {
-					const text = await parse(member.title);
-					extractMarkerTags(text).forEach((data) => {
-						data.title = member.title;
-						createMarker(data);
-					})
-				}));
+			mapMarkers().then(async (results) => {
+				results.forEach((result) => {
+					const {printouts} = result;
+					createMarker({
+						name: printouts['Name'][0],
+						x: printouts['X'][0],
+						y: printouts['Y'][0],
+						z: printouts['Z'][0],
+						world: printouts['World'][0],
+						minzoom: printouts['MinZoom'][0],
+						maxzoom: printouts['MaxZoom'][0],
+						icon: printouts['Icon'][0],
+					});
+				});
 			})
 		};
 
