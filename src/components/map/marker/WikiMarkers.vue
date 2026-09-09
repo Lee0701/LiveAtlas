@@ -84,7 +84,10 @@ export default defineComponent({
 
 		const createMarker = (data: LiveAtlasWikiMarkerInfo) => {
 			const {name, x, y, z, world, minZoom, maxZoom, icon, fullUrl, thumbnail} = data;
-			const img = (thumbnail) ? `<img src="${thumbnail}"><br>` : ``
+			const width = 25
+			const img = (thumbnail) ? `<img src="${thumbnail}" style="width: ${width}ch;"><br>` : ``
+			// Add extra zeros to match image with for popup size calculation
+			const filler = `<br><span style="display: none;">${new Array(width).fill('0').join('')}</span>`;
 			const layer = createMarkerLayer({
 				id: name,
 				type: LiveAtlasMarkerType.POINT,
@@ -94,7 +97,7 @@ export default defineComponent({
 				tooltip: name,
 				iconUrl: icon,
 				iconSize: [16, 16],
-				popup: `<a href="${fullUrl}">${img}${name}</a>`,
+				popup: `<a href="${fullUrl}">${img}${name}</a>${filler}`,
 				isPopupHTML: true,
 			} as LiveAtlasPointMarker, converter)
 			layers.set(name, layer);
