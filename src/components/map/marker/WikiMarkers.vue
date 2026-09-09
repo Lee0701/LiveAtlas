@@ -57,8 +57,8 @@ export default defineComponent({
 				query: query,
 				format: 'json',
 				origin: '*',
-			}
-			const resp = await axios.get(apiEndpoint, {params})
+			};
+			const resp = await axios.get(apiEndpoint, {params});
 			const results = Object.values(resp.data.query.results);
 			const queryContinueOffset = resp.data['query-continue-offset'];
 			if(!queryContinueOffset) return results;
@@ -66,8 +66,25 @@ export default defineComponent({
 			return [...results, ...continued];
 		}
 
+		const pageThumbnail = async (title: string): Promise<string|null> => {
+			const params = {
+				action: 'query',
+				prop: 'pageimages',
+				titles: title,
+				pithumbsize: 250,
+				format: 'json',
+				origin: '*',
+			}
+			const resp = await axios.get(apiEndpoint, {params});
+			const page: any = Object.values(resp.data.query.pages)[0];
+			if(!page || !page.thumbnail || !page.thumbnail.source) return null;
+			const thumbnail = page.thumbnail.source;
+			return thumbnail;
+		}
+
 		const createMarker = (data: LiveAtlasWikiMarkerInfo) => {
-			const {name, x, y, z, world, minZoom, maxZoom, icon, fullUrl} = data;
+			const {name, x, y, z, world, minZoom, maxZoom, icon, fullUrl, thumbnail} = data;
+			const img = (thumbnail) ? `<img src="${thumbnail}"><br>` : ``
 			const layer = createMarkerLayer({
 				id: name,
 				type: LiveAtlasMarkerType.POINT,
@@ -77,7 +94,7 @@ export default defineComponent({
 				tooltip: name,
 				iconUrl: icon,
 				iconSize: [16, 16],
-				popup: `<a href="${fullUrl}">${name}</a>`,
+				popup: `<a href="${fullUrl}">${img}${name}</a>`,
 				isPopupHTML: true,
 			} as LiveAtlasPointMarker, converter)
 			layers.set(name, layer);
@@ -85,8 +102,8 @@ export default defineComponent({
 		}
 
 		const createMarkers = () => {			
-			mapMarkers().then(async (results) => {
-				results.forEach((result) => {
+			mapMarkers().then((results) => {
+				results.forEach(async (result) => {
 					const {printouts} = result;
 					createMarker({
 						name: printouts['Name'][0],
@@ -98,6 +115,7 @@ export default defineComponent({
 						maxZoom: printouts['MaxZoom'][0],
 						icon: printouts['Icon'][0],
 						fullUrl: result.fullurl,
+						thumbnail: await pageThumbnail(result.fulltext),
 					});
 				});
 			})
